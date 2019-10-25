@@ -1,5 +1,6 @@
 from tigr.lib.interface import AbstractSourceReader
 
+
 class FileSourceReader(AbstractSourceReader):
     def go(self):
         for line_number, line in enumerate(self.file_name, 1):

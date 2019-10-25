@@ -81,7 +81,8 @@ class TkinterDrawer(AbstractDrawer, tk.Tk):
 
     def speed(self, speed):
         wait = 1 / speed
-        if speed <= 0: wait = 1
+        if speed <= 0:
+            wait = 1
         self.wait = wait
 
     def go_down(self, down):
@@ -116,7 +117,8 @@ class TkinterDrawer(AbstractDrawer, tk.Tk):
             self._draw_line(x, y)
 
     def _draw_line(self, x, y):
-        self.canvas.create_line(self.pos['x'], self.pos['y'], x, y, fill=self._pencolor, width=self._pensize)
+        self.canvas.create_line(
+            self.pos['x'], self.pos['y'], x, y, fill=self._pencolor, width=self._pensize)
         self.go_to(x, y)
         self.update()
 
@@ -127,7 +129,3 @@ class TkinterDrawer(AbstractDrawer, tk.Tk):
     @property
     def heading(self):
         return self._heading - 90
-
-
-
-

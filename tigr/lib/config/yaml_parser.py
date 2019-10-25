@@ -1,5 +1,6 @@
 import yaml
 
+
 class YamlParser:
     def __init__(self, file):
         self.file = file

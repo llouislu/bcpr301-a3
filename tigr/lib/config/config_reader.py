@@ -1,9 +1,10 @@
 import os
+
+
 class Config:
     def __init__(self, file):
         self.file = file
         self.path = "./tigr/doc/"
-
 
     def readConfig(self):
 

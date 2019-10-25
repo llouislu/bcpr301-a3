@@ -1,9 +1,10 @@
+from tigr.lib.drawer.pen_config import pen_config as default_pen_config
+from tigr.lib.drawer.turtle_drawer import TurtleDrawer
 import sys
 import os
 import unittest
-sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
-from tigr.lib.drawer.turtle_drawer import TurtleDrawer
-from tigr.lib.drawer.pen_config import pen_config as default_pen_config
+sys.path.insert(0, os.path.abspath(
+    os.path.join(os.path.dirname(__file__), '..')))
 
 
 class TestCasetTurtleDrawer(unittest.TestCase):
@@ -40,15 +41,14 @@ class TestCasetTurtleDrawer(unittest.TestCase):
         self.assertFalse(self.instance.isdown())
 
     def test_go_along(self):
-        self.instance.setposition(0,0)
+        self.instance.setposition(0, 0)
         self.instance.go_along(100)
-        self.assertTrue(self.instance.pos() == (100,0))
+        self.assertTrue(self.instance.pos() == (100, 0))
 
     def test_go_down(self):
-        self.instance.setposition(0,0)
+        self.instance.setposition(0, 0)
         self.instance.go_down(100)
-        self.assertTrue(self.instance.pos() == (0,100))
-
+        self.assertTrue(self.instance.pos() == (0, 100))
 
     def test_select_pen_color(self):
         self.instance.select_pen(1)
@@ -68,6 +68,7 @@ class TestCasetTurtleDrawer(unittest.TestCase):
         self.assertTrue(self.instance.draw_degrees.get('E', -1) == 0)
         self.assertTrue(self.instance.draw_degrees.get('S', -1) == 270)
         self.assertTrue(self.instance.draw_degrees.get('W', -1) == 180)
+
 
 if __name__ == '__main__':
     unittest.main()

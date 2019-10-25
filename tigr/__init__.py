@@ -1,5 +1,6 @@
 __version__ = '0.1'
 
+
 def run(args):
     file_name = None
     if args.interactive:
@@ -25,8 +26,10 @@ def run(args):
             pen_config['default'] = pen_config[int(args.pen)]
         else:
             ValueError('you have pen config is incorrect!')
-    reader = Reader(Parser(Drawer(pen_config=pen_config)), optional_file_name=file_name)
+    reader = Reader(Parser(Drawer(pen_config=pen_config)),
+                    optional_file_name=file_name)
     reader.go()
+
 
 def main():
     import argparse
@@ -44,7 +47,7 @@ def main():
     group.add_argument('-d', '--drawer', action='store',
                        help='specify a drawer', choices=['tkinter', 'turtle'], default='turtle')
     group.add_argument('-pn', '--pen', action='store',
-                       help='specify a pen number', choices=[str(i) for i in range(1,11)], default='1')
+                       help='specify a pen number', choices=[str(i) for i in range(1, 11)], default='1')
     group.add_argument('infile', nargs='?', type=argparse.FileType(
         'r'), default=sys.stdin, help='input script file or stream from stdin')
 
@@ -67,4 +70,3 @@ def main():
             print(e)
     else:
         run(args)
-
