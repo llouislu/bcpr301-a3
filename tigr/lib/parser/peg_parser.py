@@ -1,34 +1,29 @@
 from parsimonious import Grammar
 from parsimonious.nodes import NodeVisitor
-from tigr.lib.interface import AbstractParser
+from tigr.lib.parser.parser_template import TemplateParser
 
 
-class TigrVisitor(NodeVisitor):
-    def visit_line(self, node, visited_children):
-        """ Makes a dict of the section (as key) and the key/value pairs. """
-        s, *_ = visited_children
-        return s
+class PegParser(TemplateParser):
 
-    def visit_statement(self, node, visited_children):
-        directive, _, parameter = visited_children
-        if parameter:
-            return directive.text, parameter[0].text
-        else:
-            return directive.text, ''
+    class TigrVisitor(NodeVisitor):
+        def visit_line(self, node, visited_children):
+            """ Makes a dict of the section (as key) and the key/value pairs. """
+            s, *_ = visited_children
+            return s
 
-    def generic_visit(self, node, visited_children):
-        """ The generic visit method. """
-        return visited_children or node
+        def visit_statement(self, node, visited_children):
+            directive, _, parameter = visited_children
+            if parameter:
+                return directive.text, parameter[0].text
+            else:
+                return directive.text, ''
 
+        def generic_visit(self, node, visited_children):
+            """ The generic visit method. """
+            return visited_children or node
 
-class PegParser(AbstractParser):
     def __init__(self, drawer):
         super().__init__(drawer)
-        self.drawer = drawer
-        self.source = []
-        self.command = ''
-        self.data = 0
-
         self.peg_grammar = Grammar(r'''
             line = statement ws? comment? ws
             statement   = directive ws? parameter?
@@ -37,65 +32,21 @@ class PegParser(AbstractParser):
             comment     = ~"#.*"
             ws          = ~"\s*"
         ''')
-        self.peg_visitor = TigrVisitor()
+        self.peg_visitor = self.TigrVisitor()
 
-        self.no_parameter_commands = {
-            'D': self.drawer.pen_down,
-            'U': self.drawer.pen_up
-        }
-
-        self.one_parameter_commands = {
-            'P': self.drawer.select_pen,
-            # 'G': self.drawer.goto,
-            'X': self.drawer.go_along,
-            'Y': self.drawer.go_down,
-        }
-        self.draw_commands = {
-            'N': self.drawer.draw_line,
-            'E': self.drawer.draw_line,
-            'S': self.drawer.draw_line,
-            'W': self.drawer.draw_line,
-        }
-        self.draw_degrees = {
-            'N': 90 * 1,
-            'E': 0,
-            'S': 90 * 3,
-            'W': 90 * 2
-        }
-
-    def parse(self, raw_source):
-        for line_number, line in enumerate(raw_source, 1):
-            line_uppercased = line.upper()
-            if not line_uppercased:
-                # skip empty line
-                continue
-            if line_uppercased.startswith('#'):
-                # skip comment line
-                continue
-            try:
-                ast = self.peg_grammar.parse(line_uppercased)
-                self.command, self.data = self.peg_visitor.visit(ast)
-                self.draw()
-            except Exception:
-                print('you have a syntax error at Line {}: {}'.format(line_number, line))
-
-    def is_float(self, string):
+    def do_parse_line(self, line_number, line):
+        line_uppercased = line.upper()
+        if not line_uppercased:
+            # skip empty line
+            raise self.SkipParseException()
+        if line_uppercased.startswith('#'):
+            # skip comment line
+            raise self.SkipParseException()
         try:
-            float(string)
-        except:
-            return False
-        return True
-
-    def draw(self):
-        if self.command not in self.no_parameter_commands:
-            if not self.is_float(self.data):
-                raise ValueError()
-            self.data = float(self.data)
-
-        if self.command in self.no_parameter_commands:
-            self.no_parameter_commands[self.command]()
-        elif self.command in self.one_parameter_commands:
-            self.one_parameter_commands[self.command](self.data)
-        elif self.command in self.draw_commands:
-            self.draw_commands[self.command](
-                self.command, self.data)
+            ast = self.peg_grammar.parse(line_uppercased)
+            command, data = self.peg_visitor.visit(ast)
+        except Exception:
+            raise self.ParseException('you have a syntax error at Line {}: {}'.format(
+                line_number, line))
+        else:
+            return command, data
