@@ -1,0 +1,41 @@
+@startuml
+
+
+' implements abstract class
+RegexParser ..> AbstractParser
+PegParser ..> AbstractParser
+
+abstract class AbstractParser {
+    Drawer drawer
+    list source
+    str command
+    int data
+    + <<constructor >> AbstractParser(Drawer drawer)
+    + parse(list raw_source) : void
+}
+
+
+class RegexParser {
+    dict no_parameter_commands
+    dict one_parameter_commands
+    dict draw_commands
+    RegExpPattern line_pattern
+    + <<constructor >> RegexParser(Drawer drawer)
+    + parse(list raw_source) : void
+    + do_parse_line(int line_number, str line) : void
+    + is_float(str string): bool
+    + draw(): void
+}
+
+class PegParser {
+    dict no_parameter_commands
+    dict one_parameter_commands
+    dict draw_commands
+    Grammar peg_grammar
+    NodeVistor peg_visitor
+    + <<constructor >> PegParser(Drawer drawer)
+    + parse(list raw_source) : void
+    + is_float(str string): bool
+    + draw(): void
+}
+@enduml

@@ -1,0 +1,54 @@
+@startuml
+
+
+' implements abstract class
+TemplateParser <|-- AbstractParser
+
+RegexParser ..> TemplateParser
+PegParser ..> TemplateParser
+
+abstract class AbstractParser {
+    Drawer drawer
+    list source
+    str command
+    int data
+    + <<constructor >> AbstractParser(Drawer drawer)
+    {abstract} parse(list raw_source) : void
+}
+
+abstract class TemplateParser {
+    Drawer drawer
+    list source
+    str command
+    int data
+    dict no_parameter_commands
+    dict one_parameter_commands
+    dict draw_commands
+    Exception ParseException
+    Exception SkipParseException
+
+    + <<constructor >> AbstractParser(Drawer drawer)
+    + parse(list raw_source) : void
+    + check_source(object raw_source) : bool
+    + is_float(str string) : bool
+    + draw() : void
+    {abstract} do_parse_line(int line_number, str line) : tuple
+}
+note left: Abstract Class\nTemplate method: parse()\nHook methods: check_source(), draw()
+
+
+class RegexParser {
+    RegExpPattern line_pattern
+    + <<constructor >> RegexParser(Drawer drawer)
+    + do_parse_line(int line_number, str line) : tuple
+}
+note left: concrete class
+
+class PegParser {
+    Grammar peg_grammar
+    NodeVistor peg_visitor
+    + <<constructor >> PegParser(Drawer drawer)
+    + do_parse_line(int line_number, str line) : tuple
+}
+note right: concrete class
+@enduml
