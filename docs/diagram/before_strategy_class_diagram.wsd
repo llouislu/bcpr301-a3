@@ -1,0 +1,26 @@
+@startuml
+
+
+' dependencies
+IniParser -- Config
+YamlParser -- Config
+
+class Config {
+    str file
+    str path
+    + <<constructor>> Config(str file)
+    + readConfig() : void
+    + checkFileOrDirector() : bool
+}
+
+class IniParser {
+    str file
+    + readFile() : dict
+}
+
+class YamlParser {
+    str file
+    + readFile() : dict
+}
+
+@enduml

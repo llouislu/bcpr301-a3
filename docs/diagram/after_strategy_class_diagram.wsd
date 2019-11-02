@@ -1,0 +1,32 @@
+@startuml
+
+
+ConfigParserContext *-- AbstractConfigParser
+AbstractConfigParser <|-- IniParser
+AbstractConfigParser <|-- YamlParser
+
+class ConfigParserContext {
+    str __config_file
+    None __config_parser
+    + read() : dict
+    + set_strategy(ConcreteConfigParser parser) : void
+
+}
+note left: Context
+
+abstract class AbstractConfigParser {
+    {abstract} parse(str config_file) : dict
+}
+note left: Strategy
+
+class IniParser {
+    + parse(str config_file) : dict
+}
+note left: ConcreteStrategy
+
+class YamlParser {
+    + parse(str config_file) : dict
+}
+note right: ConcreteStrategy
+
+@enduml
