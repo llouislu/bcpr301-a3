@@ -1,8 +1,9 @@
-from tigr.lib.drawer.pen_config import pen_config as default_pen_config
-from tigr.lib.drawer.turtle_drawer import TurtleDrawer
-import sys
 import os
+import sys
 import unittest
+
+from tigr.lib.drawer.turtle_drawer import TurtleDrawer
+
 sys.path.insert(0, os.path.abspath(
     os.path.join(os.path.dirname(__file__), '..')))
 

@@ -1,10 +1,10 @@
 from parsimonious import Grammar
 from parsimonious.nodes import NodeVisitor
+
 from tigr.lib.parser.parser_template import TemplateParser
 
 
 class PegParser(TemplateParser):
-
     class TigrVisitor(NodeVisitor):
         def visit_line(self, node, visited_children):
             """ Makes a dict of the section (as key) and the key/value pairs. """

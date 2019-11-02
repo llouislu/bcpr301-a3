@@ -1,6 +1,8 @@
 from abc import abstractmethod, ABCMeta
 from collections.abc import Iterable
+
 from tigr.lib.interface import AbstractParser
+
 
 class TemplateParser(AbstractParser):
     __metaclass__ = ABCMeta
@@ -56,7 +58,7 @@ class TemplateParser(AbstractParser):
     def is_float(self, string):
         try:
             float(string)
-        except:
+        except Exception:
             return False
         return True
 

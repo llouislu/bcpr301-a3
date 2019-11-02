@@ -1,8 +1,9 @@
-import tkinter as tk
 import math
 import time
-from tigr.lib.interface import AbstractDrawer
+import tkinter as tk
+
 from tigr.lib.drawer.pen_config import pen_config as default_pen_config
+from tigr.lib.interface import AbstractDrawer
 
 
 class TkinterDrawer(AbstractDrawer, tk.Tk):
@@ -27,10 +28,10 @@ class TkinterDrawer(AbstractDrawer, tk.Tk):
         self.speed(int(speed))
         self.canvas = tk.Canvas(self, width=width, height=height)
         self.canvas.pack(side=tk.TOP, fill=tk.X)
-        self.home_pos = (width/2, height/2)
+        self.home_pos = (width / 2, height / 2)
         self.pos = {
-            'x': width/2,
-            'y': height/2
+            'x': width / 2,
+            'y': height / 2
         }
         self.angle = {
             'N': 90,

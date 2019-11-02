@@ -1,6 +1,7 @@
 import turtle
-from tigr.lib.interface import AbstractDrawer
+
 from tigr.lib.drawer.pen_config import pen_config as default_pen_config
+from tigr.lib.interface import AbstractDrawer
 
 
 class TurtleDrawer(AbstractDrawer, turtle.Turtle):

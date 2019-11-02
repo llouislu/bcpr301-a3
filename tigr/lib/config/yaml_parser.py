@@ -1,4 +1,5 @@
 import yaml
+
 from .abstract_config_parser import AbstractConfigParser
 
 

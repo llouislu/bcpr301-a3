@@ -62,7 +62,7 @@ def main():
             args.parser = result["parser"]
             args.drawer = result["drawer"]
             pen = result["pen"]
-            if (type(pen) == int):
+            if (isinstance(pen, int)):
                 pen = str(pen)
             args.pen = pen
             run(args)
