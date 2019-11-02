@@ -28,10 +28,10 @@ class TestCasetTurtleDrawer(unittest.TestCase):
     def test_draw_line(self):
         self.instance.pen_up()
         self.instance.draw_line('N', 100)
-        self.assertTrue(self.instance.isdown() == True)
+        self.assertTrue(self.instance.isdown())
         self.instance.pen_up()
         self.instance.draw_line('S', 100)
-        self.assertTrue(self.instance.isdown() == True)
+        self.assertTrue(self.instance.isdown())
 
     def test_pen_down(self):
         self.instance.pen_down()

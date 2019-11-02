@@ -7,7 +7,9 @@ from tigr.lib.parser.parser_template import TemplateParser
 class PegParser(TemplateParser):
     class TigrVisitor(NodeVisitor):
         def visit_line(self, node, visited_children):
-            """ Makes a dict of the section (as key) and the key/value pairs. """
+            """
+            Makes a dict of the section (as key)and the key/value pairs.
+            """
             s, *_ = visited_children
             return s
 
@@ -46,7 +48,8 @@ class PegParser(TemplateParser):
             ast = self.peg_grammar.parse(line_uppercased)
             command, data = self.peg_visitor.visit(ast)
         except Exception:
-            raise self.ParseException('you have a syntax error at Line {}: {}'.format(
-                line_number, line))
+            raise self.ParseException(
+                'you have a syntax error at Line {}: {}'
+                .format(line_number, line))
         else:
             return command, data

@@ -119,7 +119,8 @@ class TkinterDrawer(AbstractDrawer, tk.Tk):
 
     def _draw_line(self, x, y):
         self.canvas.create_line(
-            self.pos['x'], self.pos['y'], x, y, fill=self._pencolor, width=self._pensize)
+            self.pos['x'], self.pos['y'], x, y,
+            fill=self._pencolor, width=self._pensize)
         self.go_to(x, y)
         self.update()
 
