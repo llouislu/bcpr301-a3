@@ -1,12 +1,15 @@
-class IniPaser:
-    def __init__(self, file):
-        self.file = file
+import configparser
+from .abstract_config_parser import AbstractConfigParser
+from .config_exception import ConfigException
 
-    def readFile(self):
-        import configparser
+class IniPaser(AbstractConfigParser):
+
+    def parse(self, config_file):
         config = configparser.ConfigParser()
-        config.read(self.file)
+        config.read(config_file)
+        if 'default' not in config.sections():
+            raise ConfigException('ini config file does not have a default section')
         result = {}
-        for k, v in config.items('default'):
+        for k,v in config['default'].items():
             result[k] = v
         return result

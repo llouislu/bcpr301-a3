@@ -1,15 +1,9 @@
 import yaml
+from .abstract_config_parser import AbstractConfigParser
 
 
-class YamlParser:
-    def __init__(self, file):
-        self.file = file
+class YamlParser(AbstractConfigParser):
 
-    def readFile(self):
-        try:
-            f = open(self.file)
-            result = yaml.safe_load(f)
-            f.close()
-            return result
-        except FileNotFoundError:
-            print('The file cannot be found')
+    def parse(self, config_file):
+        with open(config_file) as f:
+            return yaml.safe_load(f)

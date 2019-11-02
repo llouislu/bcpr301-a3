@@ -1,39 +1,27 @@
-import os
+from pathlib import Path
+
+from .config_exception import ConfigException
+from .ini_parser import IniPaser
+from .strategic_config_context import ConfigParserContext
+from .yaml_parser import YamlParser
 
 
 class Config:
     def __init__(self, file):
         self.file = file
-        self.path = "./tigr/doc/"
+        self.strategic_config_context = ConfigParserContext(file)
 
-    def readConfig(self):
+    def read_config(self):
+        f = Path(self.file)
+        if not f.is_file():
+            raise ConfigException('The config file does not exist')
 
-        from pathlib import Path
-        from .ini_parser import IniPaser
-        from .yaml_parser import YamlParser
-        from .ConfigException import ConfigException
-
-        file = self.file
-        if self.checkFileOrDirector() == False:
-            file = self.path + self.file
-
-        if os.path.isfile(file):
-            suffix = file[file.rindex('.'):]
-            if (suffix in ['.yaml', '.yml']):
-                yamlParser = YamlParser(file)
-                return yamlParser.readFile()
-            elif (suffix == '.ini'):
-                iniPaser = IniPaser(file)
-                return iniPaser.readFile()
-            else:
-                print('The format of file should be *.ini, *.yaml or *.yml')
-                raise ConfigException()
-            return None
+        if f.suffix == '.ini':
+            self.strategic_config_context.set_strategy(IniPaser())
+        elif f.suffix in ['.yaml', '.yml']:
+            self.strategic_config_context.set_strategy(YamlParser())
         else:
-            print('The config file does not exist')
-            raise ConfigException()
+            raise ConfigException(
+                'The format of file should be * .ini, *.yaml or *.yml')
 
-    def checkFileOrDirector(self):
-        if os.path.isfile(self.file):
-            return True
-        return False
+        return self.strategic_config_context.read()

@@ -54,11 +54,11 @@ def main():
     args = parser.parse_args()
 
     from .lib.config.config_reader import Config
-    from .lib.config.ConfigException import ConfigException
+    from .lib.config.config_exception import ConfigException
     args_config = args.config
     if args_config != '':
         try:
-            result = Config(args_config).readConfig()
+            result = Config(args_config).read_config()
             args.parser = result["parser"]
             args.drawer = result["drawer"]
             pen = result["pen"]
